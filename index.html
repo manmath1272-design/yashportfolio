@@ -760,58 +760,7 @@
             font-weight: 700;
         }
 
-        .settings-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 18px;
-            padding: 8px;
-            border-radius: 50%;
-            transition: var(--transition);
-            z-index: 10;
-        }
 
-        .settings-btn:hover {
-            color: var(--secondary);
-            background: rgba(255, 255, 255, 0.04);
-            transform: rotate(45deg);
-        }
-
-        /* Discord Webhook Settings Panel */
-        .webhook-settings {
-            background: rgba(9, 10, 16, 0.95);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .webhook-settings.active {
-            display: block;
-        }
-
-        .webhook-settings h3 {
-            font-size: 15px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--secondary);
-        }
-
-        .webhook-settings p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
 
         /* Form Controls */
         .form-group {
@@ -1087,10 +1036,6 @@
                         <div class="stat-number">10+</div>
                         <div class="stat-label">Web Apps</div>
                     </div>
-                    <div class="glass-card stat-card">
-                        <div class="stat-number">5M+</div>
-                        <div class="stat-label">Views Managed</div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1211,7 +1156,7 @@
                         <a href="https://github.com/Rtxltc/Service-center-module" target="_blank" class="project-btn project-btn-secondary">
                             <i class="fab fa-github"></i> Code
                         </a>
-                        <a href="https://service-center-module.vercel.app" target="_blank" class="project-btn project-btn-primary">
+                        <a href="charom-resq.com" target="_blank" class="project-btn project-btn-primary">
                             <i class="fas fa-external-link-alt"></i> Live Demo
                         </a>
                     </div>
@@ -1260,7 +1205,7 @@
                         <a href="https://github.com/Rtxltc/frontend-mailsetup" target="_blank" class="project-btn project-btn-secondary">
                             <i class="fab fa-github"></i> Code
                         </a>
-                        <a href="https://frontend-mailsetup.vercel.app" target="_blank" class="project-btn project-btn-primary">
+                        <a href="https://ms.soulmatrix.in" target="_blank" class="project-btn project-btn-primary">
                             <i class="fas fa-external-link-alt"></i> Live Demo
                         </a>
                     </div>
@@ -1285,6 +1230,9 @@
                     <div class="project-actions">
                         <a href="https://github.com/Rtxltc/videoeditor" target="_blank" class="project-btn project-btn-secondary" style="flex: 1;">
                             <i class="fab fa-github"></i> View Repository
+                        </a>
+                        <a href="https://vportfolio.soulmatrix.in" target="_blank" class="project-btn project-btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
                         </a>
                     </div>
                 </div>
@@ -1342,18 +1290,6 @@
                 <div class="glass-card contact-form-wrapper">
                     <div class="contact-form-header">
                         <h3 class="contact-form-title">Send a Message</h3>
-                        <button class="settings-btn" id="webhook-settings-trigger" title="Discord Webhook Settings">
-                            <i class="fas fa-cog"></i>
-                        </button>
-                    </div>
-
-                    <!-- Webhook Settings (Collapsible) -->
-                    <div class="webhook-settings" id="webhook-settings-panel">
-                        <h3><i class="fab fa-discord"></i> Webhook Settings</h3>
-                        <p>Configure a custom Discord Webhook URL for testing. Leave empty to use the default.</p>
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <input type="url" id="custom-webhook-url" class="form-control" placeholder="https://discord.com/api/webhooks/..." autocomplete="off">
-                        </div>
                     </div>
 
                     <!-- Submission Status Banners -->
@@ -1400,8 +1336,8 @@
 
     <!-- JavaScript logic -->
     <script>
-        // Default Webhook URL
-        const DEFAULT_WEBHOOK_URL = '';
+        // Discord Webhook URL
+        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1525056484000534600/7vYRcf3faQrRxtQuWi46cWwkAbqkKUwCtTDhIeVtcrS0UtIYSsAE09ay9Jj0wzaB-lxx';
 
         // 1. Mobile Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -1595,31 +1531,10 @@
         initParticles();
         animateParticles();
 
-        // 5. Discord Webhook Submissions & Webhook Settings Manager
-        const settingsTrigger = document.getElementById('webhook-settings-trigger');
-        const settingsPanel = document.getElementById('webhook-settings-panel');
-        const customWebhookInput = document.getElementById('custom-webhook-url');
+        // 5. Discord Webhook Submissions
         const contactForm = document.getElementById('contact-form');
         const submitBtn = document.getElementById('form-submit-btn');
         const statusBanner = document.getElementById('form-status-banner');
-
-        // Load custom Webhook URL if saved in sessionStorage
-        if (sessionStorage.getItem('custom_discord_webhook')) {
-            customWebhookInput.value = sessionStorage.getItem('custom_discord_webhook');
-        }
-
-        settingsTrigger.addEventListener('click', () => {
-            settingsPanel.classList.toggle('active');
-        });
-
-        customWebhookInput.addEventListener('input', () => {
-            const url = customWebhookInput.value.trim();
-            if (url) {
-                sessionStorage.setItem('custom_discord_webhook', url);
-            } else {
-                sessionStorage.removeItem('custom_discord_webhook');
-            }
-        });
 
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1634,11 +1549,10 @@
             const message = document.getElementById('form-message').value.trim();
 
             // Determine which webhook to use
-            const customWebhook = customWebhookInput.value.trim();
-            const webhookUrl = customWebhook || DEFAULT_WEBHOOK_URL;
+            const webhookUrl = DISCORD_WEBHOOK;
 
             if (!webhookUrl) {
-                statusBanner.textContent = 'Error: Webhook URL is not configured. Please click the gear icon to set a testing webhook or add it to the code.';
+                statusBanner.textContent = 'Error: Discord Webhook URL is not configured. Please set the DISCORD_WEBHOOK variable in the script.';
                 statusBanner.classList.add('status-error');
                 statusBanner.style.display = 'block';
                 return;
